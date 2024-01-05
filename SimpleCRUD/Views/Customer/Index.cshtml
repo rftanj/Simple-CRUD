@@ -1,0 +1,94 @@
+﻿@using SimpleCRUD.Models;
+@model List<Customer>
+@{
+    ViewData["Title"] = "Book Page";
+}
+<div class="text-center">
+    <h1 class="display-4">Data Customer</h1>
+    <div class="col text-right">
+        <a href="@Url.Action("Create", "Customer")" class="btn btn-primary mb-3">
+            Add Data
+        </a>
+    </div>
+    <table class="table" border="1">
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>City</th>
+            <th>Action</th>
+        </tr>
+        @foreach (var data in Model)
+        {
+            <tr>
+                <td>@data.Id</td>
+                <td>@data.Name</td>
+                <td>@data.Address</td>
+                <td>@data.City</td>
+                <td>
+                    <a href="@Url.Action("Edit", "Customer", new { id = @data.Id })" class="btn btn-sm btn-info">Edit</a>
+                    <input type="button" class="btn btn-sm btn-danger" value="Delete" onclick="deleteData(@data.Id)" />
+                </td>
+            </tr>
+        }
+    </table>
+
+    @Html.AntiForgeryToken();
+    <form asp-controller="Customer" asp-action="Delete" method="post" id="deletedatas">
+        <input type="text" name="Id" id="deleteId" style="display:none">
+    </form>
+
+        @* @{
+        var prevDisabled =
+            !Model.HasPrevPage ? "disabled" : "";
+        var nextDisabled =
+            !Model.HasNextPage ? "disabled" : "";
+        } *@
+
+        @* <section class="project-detail section-padding-half">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-9 mx-auto col-md-10 col-12 mt-lg-5 text-center" data-aos="fade-up">
+                        <div>
+                            <a asp-action="Index" style="float:right;"
+                               asp-route-pageNumber="@(Model.PageIndex +1)"
+                               class="btn btn-sm btn-primary  @nextDisabled ">
+                                Next
+                            </a>
+                        </div>
+                        <div>
+                            <a asp-action="Index" style="float:right"
+                               asp-route-pageNumber="@(Model.PageIndex -1)"
+                               class="btn btn-sm btn-primary @prevDisabled">
+                                Previous
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section> *@
+
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+@section Scripts{
+    '@*'<script type="text/javascript">
+        if(ViewBag.Success == true)
+        {
+            //swal("Success", "@ViewBag.Message", "success");
+            window.alert("Update Success");
+        }     
+
+    </script>*@
+
+
+    <script>
+        function deleteData(transactionId)
+        {
+            console.log(transactionId);
+            if (window.confirm("Are you sure want to delete this data?")) {
+                document.getElementById("deleteId").value = transactionId;
+                document.getElementById("deletedatas").submit();
+            }
+        }
+    </script>
+}
